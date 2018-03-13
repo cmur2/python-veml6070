@@ -1,24 +1,25 @@
 
-import smbus
 import time
 
-ADDR_L=0x38 # 7bit address of the VEML6070 (write, read)
-ADDR_H=0x39 # 7bit address of the VEML6070 (read)
+import smbus # pylint: disable=import-error
 
-RSET_240K=240000
-RSET_270K=270000
-RSET_300K=300000
-RSET_600K=600000
+ADDR_L = 0x38 # 7bit address of the VEML6070 (write, read)
+ADDR_H = 0x39 # 7bit address of the VEML6070 (read)
 
-SHUTDOWN_DISABLE=0x00
-SHUTDOWN_ENABLE=0x01
+RSET_240K = 240000
+RSET_270K = 270000
+RSET_300K = 300000
+RSET_600K = 600000
 
-INTEGRATIONTIME_1_2T=0x00
-INTEGRATIONTIME_1T=0x01
-INTEGRATIONTIME_2T=0x02
-INTEGRATIONTIME_4T=0x03
+SHUTDOWN_DISABLE = 0x00
+SHUTDOWN_ENABLE = 0x01
 
-class Veml6070:
+INTEGRATIONTIME_1_2T = 0x00
+INTEGRATIONTIME_1T = 0x01
+INTEGRATIONTIME_2T = 0x02
+INTEGRATIONTIME_4T = 0x03
+
+class Veml6070(object):
 
     def __init__(self, i2c_bus=1, sensor_address=ADDR_L, rset=RSET_270K, integration_time=INTEGRATIONTIME_1T):
         self.bus = smbus.SMBus(i2c_bus)
