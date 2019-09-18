@@ -89,3 +89,16 @@ class TestVeml6070(snapshottest.TestCase):
         veml.set_integration_time(veml6070.INTEGRATIONTIME_4T)
         self.assertEqual(veml.get_uva_light_intensity(), 0x0106 * 0.05625 / 4)
         self.assertMatchSnapshot(mockbus._log)
+
+    def test_get_refresh_time(self):
+        mockbus = setup_mockbus()
+        veml = veml6070.Veml6070(rset=veml6070.RSET_240K)
+        self.assertEqual(veml.get_refresh_time(), 0.1)
+        veml.set_integration_time(veml6070.INTEGRATIONTIME_1_2T)
+        self.assertEqual(veml.get_refresh_time(), 0.05)
+        veml2 = veml6070.Veml6070(rset=veml6070.RSET_270K)
+        self.assertEqual(veml2.get_refresh_time(), 0.1125)
+        veml3 = veml6070.Veml6070(rset=veml6070.RSET_600K)
+        veml3.set_integration_time(veml6070.INTEGRATIONTIME_2T)
+        self.assertEqual(veml3.get_refresh_time(), 0.5)
+        # don't assert mockbus._log as we do not care
