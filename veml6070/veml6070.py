@@ -102,3 +102,19 @@ class Veml6070(object):
             INTEGRATIONTIME_4T: 4
         }
         return self.rset * RSET_TO_REFRESHTIME_SCALE * case_refresh_it[self.integration_time]
+
+    @staticmethod
+    def get_estimated_risk_level(intensity):
+        """
+        returns estimated risk level from comparing UVA light intensity value
+        in W/(m*m) as parameter, thresholds calculated from application notes
+        """
+        if intensity < 24.888:
+            return "low"
+        if intensity < 49.800:
+            return "moderate"
+        if intensity < 66.400:
+            return "high"
+        if intensity < 91.288:
+            return "very high"
+        return "extreme"

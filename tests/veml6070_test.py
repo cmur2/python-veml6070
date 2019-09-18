@@ -90,6 +90,17 @@ class TestVeml6070(snapshottest.TestCase):
         self.assertEqual(veml.get_uva_light_intensity(), 0x0106 * (0.1/0.1125) * 0.05 / 4)
         self.assertMatchSnapshot(mockbus._log)
 
+    def test_get_estimated_risk_level(self):
+        mockbus = setup_mockbus(initial_read={
+            0x38+1: [0x01, 0x04],
+            0x38+0: [0x06, 0x01]
+        })
+        veml = veml6070.Veml6070()
+        intensity = veml.get_uva_light_intensity()
+        self.assertEqual(veml.get_estimated_risk_level(intensity), "low")
+        intensity = veml.get_uva_light_intensity()
+        self.assertEqual(veml.get_estimated_risk_level(intensity), "moderate")
+
     def test_get_refresh_time(self):
         mockbus = setup_mockbus()
         veml = veml6070.Veml6070(rset=veml6070.RSET_240K)
