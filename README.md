@@ -10,7 +10,7 @@ I created this Python library in style of e.g. [python-tsl2591](https://github.c
 
 ## Usage
 
-Consult the data sheet and see [demo.py](demo.py) for clues how to use this library.
+Consult the [datasheet](https://www.vishay.com/docs/84277/veml6070.pdf), the [application notes](https://www.vishay.com/docs/84310/designingveml6070.pdf) and see [demo.py](demo.py) for clues how to use this library.
 
 Not all functions of the chip are supported, especially not the interrupt handling since I had no use for this. Please send pull requests for improvements and bug fixes!
 
