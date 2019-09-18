@@ -23,6 +23,14 @@ INTEGRATIONTIME_4T = 0x03
 # Note: 0.1 seconds (100 ms) are applicable for RSET_240K and INTEGRATIONTIME_1T
 RSET_TO_REFRESHTIME_SCALE = 0.1 / RSET_240K
 
+# The refresh time in seconds for which NORMALIZED_UVA_SENSITIVITY
+# is applicable to a step count
+NORMALIZED_REFRESHTIME = 0.1
+
+# The UVA sensitivity in W/(m*m)/step which is applicable to a step count
+# normalized to the NORMALIZED_REFRESHTIME, for RSET_240K and INTEGRATIONTIME_1T
+NORMALIZED_UVA_SENSITIVITY = 0.05
+
 class Veml6070(object):
 
     def __init__(self, i2c_bus=1, sensor_address=ADDR_L, rset=RSET_270K, integration_time=INTEGRATIONTIME_1T):
@@ -60,8 +68,19 @@ class Veml6070(object):
         return (msb << 8) | lsb
 
     def get_uva_light_intensity(self):
-        uv = self.get_uva_light_intensity_raw()
-        return uv * self.get_uva_light_sensitivity()
+        """
+        returns the UVA light intensity in Watt per square meter (W/(m*m))
+        """
+        raw_data = self.get_uva_light_intensity_raw()
+
+        # normalize raw data (step count sampled in get_refresh_time()) into the
+        # linearly scaled normalized data (step count sampled in 0.1s) for which
+        # we know the UVA sensitivity
+        normalized_data = raw_data * NORMALIZED_REFRESHTIME / self.get_refresh_time()
+
+        # now we can calculate the absolute UVA power detected combining
+        # normalized  data with known UVA sensitivity for this data
+        return normalized_data * NORMALIZED_UVA_SENSITIVITY # in W/(m*m)
 
     def get_command_byte(self):
         """
@@ -83,21 +102,3 @@ class Veml6070(object):
             INTEGRATIONTIME_4T: 4
         }
         return self.rset * RSET_TO_REFRESHTIME_SCALE * case_refresh_it[self.integration_time]
-
-    def get_uva_light_sensitivity(self):
-        """
-        returns UVA light sensitivity in W/(m*m)/step
-        """
-        case_sens_rset = {
-            RSET_240K: 0.05,
-            RSET_270K: 0.05625,
-            RSET_300K: 0.0625,
-            RSET_600K: 0.125
-        }
-        case_sens_it = {
-            INTEGRATIONTIME_1_2T: 0.5,
-            INTEGRATIONTIME_1T: 1,
-            INTEGRATIONTIME_2T: 2,
-            INTEGRATIONTIME_4T: 4
-        }
-        return case_sens_rset[self.rset] / case_sens_it[self.integration_time]

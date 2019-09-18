@@ -85,9 +85,9 @@ class TestVeml6070(snapshottest.TestCase):
             0x38+0: [0x06, 0x06]
         })
         veml = veml6070.Veml6070()
-        self.assertEqual(veml.get_uva_light_intensity(), 0x0106 * 0.05625 / 1)
+        self.assertEqual(veml.get_uva_light_intensity(), 0x0106 * (0.1/0.1125) * 0.05 / 1)
         veml.set_integration_time(veml6070.INTEGRATIONTIME_4T)
-        self.assertEqual(veml.get_uva_light_intensity(), 0x0106 * 0.05625 / 4)
+        self.assertEqual(veml.get_uva_light_intensity(), 0x0106 * (0.1/0.1125) * 0.05 / 4)
         self.assertMatchSnapshot(mockbus._log)
 
     def test_get_refresh_time(self):
