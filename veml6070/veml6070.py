@@ -19,6 +19,10 @@ INTEGRATIONTIME_1T = 0x01
 INTEGRATIONTIME_2T = 0x02
 INTEGRATIONTIME_4T = 0x03
 
+# Scale factor in seconds / Ohm to determine refresh time for any RSET
+# Note: 0.1 seconds (100 ms) are applicable for RSET_240K and INTEGRATIONTIME_1T
+RSET_TO_REFRESHTIME_SCALE = 0.1 / RSET_240K
+
 class Veml6070(object):
 
     def __init__(self, i2c_bus=1, sensor_address=ADDR_L, rset=RSET_270K, integration_time=INTEGRATIONTIME_1T):
@@ -72,19 +76,13 @@ class Veml6070(object):
         """
         returns time needed to perform a complete measurement using current settings (in s)
         """
-        case_refresh_rset = {
-            RSET_240K: 0.1,
-            RSET_270K: 0.1125,
-            RSET_300K: 0.125,
-            RSET_600K: 0.25
-        }
         case_refresh_it = {
             INTEGRATIONTIME_1_2T: 0.5,
             INTEGRATIONTIME_1T: 1,
             INTEGRATIONTIME_2T: 2,
             INTEGRATIONTIME_4T: 4
         }
-        return case_refresh_rset[self.rset] * case_refresh_it[self.integration_time]
+        return self.rset * RSET_TO_REFRESHTIME_SCALE * case_refresh_it[self.integration_time]
 
     def get_uva_light_sensitivity(self):
         """

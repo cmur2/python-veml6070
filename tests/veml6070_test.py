@@ -101,4 +101,6 @@ class TestVeml6070(snapshottest.TestCase):
         veml3 = veml6070.Veml6070(rset=veml6070.RSET_600K)
         veml3.set_integration_time(veml6070.INTEGRATIONTIME_2T)
         self.assertEqual(veml3.get_refresh_time(), 0.5)
+        veml4 = veml6070.Veml6070(rset=480000)
+        self.assertEqual(veml4.get_refresh_time(), 0.2)
         # don't assert mockbus._log as we do not care
