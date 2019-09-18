@@ -64,7 +64,7 @@ class Veml6070(object):
         assembles the command byte for the current state
         """
         cmd = (self.shutdown & 0x01) << 0 # SD
-        cmd = (self.integration_time & 0x03) << 2 # IT
+        cmd = cmd | (self.integration_time & 0x03) << 2 # IT
         cmd = ((cmd | 0x02) & 0x3F) # reserved bits
         return cmd
 

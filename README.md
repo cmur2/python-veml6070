@@ -14,6 +14,12 @@ Consult the [datasheet](https://www.vishay.com/docs/84277/veml6070.pdf), the [ap
 
 Not all functions of the chip are supported, especially not the interrupt handling since I had no use for this. Please send pull requests for improvements and bug fixes!
 
+## Serious Flaws before September 2019
+
+In September 2019 it was discovered (and fixed) that:
+
+- previously the sensor was never shutdown between measurements which wastes power but still takes measurements successfully
+
 ## License
 
 Python files in this repository are released under the [MIT license](LICENSE).
