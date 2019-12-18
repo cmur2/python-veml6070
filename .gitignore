@@ -1,4 +1,4 @@
-.cache/
-env/
+.pytest_cache/
 __pycache__/
-*.pyc
+*.py[cod]
+Pipfile.lock
