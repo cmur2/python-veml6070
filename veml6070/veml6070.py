@@ -1,10 +1,9 @@
-
 import time
 
-import smbus # pylint: disable=import-error
+import smbus  # pylint: disable=import-error
 
-ADDR_L = 0x38 # 7bit address of the VEML6070 (write, read)
-ADDR_H = 0x39 # 7bit address of the VEML6070 (read)
+ADDR_L = 0x38  # 7bit address of the VEML6070 (write, read)
+ADDR_H = 0x39  # 7bit address of the VEML6070 (read)
 
 RSET_240K = 240000
 RSET_270K = 270000
@@ -31,13 +30,13 @@ NORMALIZED_REFRESHTIME = 0.1
 # normalized to the NORMALIZED_REFRESHTIME, for RSET_240K and INTEGRATIONTIME_1T
 NORMALIZED_UVA_SENSITIVITY = 0.05
 
-class Veml6070(object): # pylint: disable=bad-option-value,useless-object-inheritance
 
+class Veml6070(object):  # pylint: disable=bad-option-value,useless-object-inheritance
     def __init__(self, i2c_bus=1, sensor_address=ADDR_L, rset=RSET_270K, integration_time=INTEGRATIONTIME_1T):
         self.bus = smbus.SMBus(i2c_bus)
         self.sendor_address = sensor_address
         self.rset = rset
-        self.shutdown = SHUTDOWN_DISABLE # before set_integration_time()
+        self.shutdown = SHUTDOWN_DISABLE  # before set_integration_time()
         self.set_integration_time(integration_time)
         self.disable()
 
@@ -61,8 +60,8 @@ class Veml6070(object): # pylint: disable=bad-option-value,useless-object-inheri
     def get_uva_light_intensity_raw(self):
         self.enable()
         # wait two times the refresh time to allow completion of a previous cycle with old settings (worst case)
-        time.sleep(self.get_refresh_time()*2)
-        msb = self.bus.read_byte(self.sendor_address+(ADDR_H-ADDR_L))
+        time.sleep(self.get_refresh_time() * 2)
+        msb = self.bus.read_byte(self.sendor_address + (ADDR_H - ADDR_L))
         lsb = self.bus.read_byte(self.sendor_address)
         self.disable()
         return (msb << 8) | lsb
@@ -80,15 +79,15 @@ class Veml6070(object): # pylint: disable=bad-option-value,useless-object-inheri
 
         # now we can calculate the absolute UVA power detected combining
         # normalized  data with known UVA sensitivity for this data
-        return normalized_data * NORMALIZED_UVA_SENSITIVITY # in W/(m*m)
+        return normalized_data * NORMALIZED_UVA_SENSITIVITY  # in W/(m*m)
 
     def get_command_byte(self):
         """
         assembles the command byte for the current state
         """
-        cmd = (self.shutdown & 0x01) << 0 # SD
-        cmd = cmd | (self.integration_time & 0x03) << 2 # IT
-        cmd = ((cmd | 0x02) & 0x3F) # reserved bits
+        cmd = (self.shutdown & 0x01) << 0  # SD
+        cmd = cmd | (self.integration_time & 0x03) << 2  # IT
+        cmd = ((cmd | 0x02) & 0x3F)  # reserved bits
         return cmd
 
     def get_refresh_time(self):

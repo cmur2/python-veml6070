@@ -13,7 +13,8 @@ all: lint test ## Run lint and test (default goal)
 
 .PHONY: lint
 lint: ## Lint all source code
-	poetry run pylint veml6070
+	poetry run yapf -q -r veml6070
+	poetry run pylint --ignore=snapshots veml6070 tests
 
 .PHONY: test
 test: ## Run all tests
