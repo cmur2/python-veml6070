@@ -1,0 +1,23 @@
+[build-system]
+requires = ["poetry>=1.0"]
+build-backend = "poetry.masonry.api"
+
+[tool.poetry]
+name = "veml6070"
+version = "1.0.0"
+description = "A python library for accessing the VEML6070 digital UV light sensor from Vishay."
+authors = ["Christian Nicolai"]
+license = "MIT"
+homepage = "https://dev.mycrobase.de/gitea/cn/python-veml6070"
+
+[tool.poetry.dependencies]
+python = "^2.7 || ^3.4"
+smbus2 = "*"
+
+[tool.poetry.dev-dependencies]
+mock = "*"
+pylint = "*"
+pytest = "*"
+snapshottest = "*"
+rope = "*"
+yapf = "*"

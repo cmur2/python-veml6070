@@ -31,7 +31,7 @@ NORMALIZED_REFRESHTIME = 0.1
 # normalized to the NORMALIZED_REFRESHTIME, for RSET_240K and INTEGRATIONTIME_1T
 NORMALIZED_UVA_SENSITIVITY = 0.05
 
-class Veml6070(object):
+class Veml6070(object): # pylint: disable=bad-option-value,useless-object-inheritance
 
     def __init__(self, i2c_bus=1, sensor_address=ADDR_L, rset=RSET_270K, integration_time=INTEGRATIONTIME_1T):
         self.bus = smbus.SMBus(i2c_bus)

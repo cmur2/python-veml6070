@@ -14,7 +14,7 @@ time.sleep = lambda s: None
 import veml6070
 
 # inspired by https://github.com/adafruit/Adafruit_Python_GPIO/blob/master/Adafruit_GPIO/I2C.py
-class MockSMBus(object):
+class MockSMBus(object): # pylint: disable=bad-option-value,useless-object-inheritance
     def __init__(self, initial_read=None):
         self._log = []
         self.initial_read = initial_read or {}
