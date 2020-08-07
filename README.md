@@ -21,6 +21,10 @@ In September 2019 it was discovered (and fixed) that:
 - previously the sensor was never shutdown between measurements which wastes power but still takes measurements successfully
 - the UVA light intensity was calculated wrongly (too high) for `rset != RSET_240K` due to wrong compensation: higher `rset` leads to higher sampling time leads to higher absolute ADC step counts which *should* lead to every ADC step indicating a smaller amount of `W/(m*m)` of UVA power and a higher precision of the final UVA power but it wrongly behaved the opposite way. The `integration_time` worked correctly all the time.
 
+## Develop
+
+Run `make help` to find out about the available development commands.
+
 ## License
 
 Python files in this repository are released under the [MIT license](LICENSE).
