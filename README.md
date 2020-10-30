@@ -1,6 +1,6 @@
 # python-veml6070
 
-[![Build Status](https://travis-ci.org/cmur2/python-veml6070.svg?branch=master)](https://travis-ci.org/cmur2/python-veml6070)
+[![Build Status](https://travis-ci.com/cmur2/python-veml6070.svg?branch=master)](https://travis-ci.com/cmur2/python-veml6070)
 
 A Python library for accessing the [VEML6070 digital UV light sensor](http://www.vishay.com/docs/84277/veml6070.pdf) from Vishay via `python-smbus` using the I2C interface.
 
