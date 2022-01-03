@@ -32,6 +32,7 @@ NORMALIZED_UVA_SENSITIVITY = 0.05
 
 
 class Veml6070():
+
     def __init__(self, i2c_bus=1, sensor_address=ADDR_L, rset=RSET_270K, integration_time=INTEGRATIONTIME_1T):
         self.bus = smbus.SMBus(i2c_bus)
         self.sendor_address = sensor_address
